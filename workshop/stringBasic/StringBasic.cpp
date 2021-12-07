@@ -54,7 +54,10 @@ StringBasic& StringBasic::operator=(const StringBasic& other) {
         }
     }
 
-    *this = StringBasic(other);
+    m_string = other.m_string;
+    m_size = other.m_size;
+    m_lenght = other.m_lenght;
+
     return *this;
 }
 
@@ -74,13 +77,14 @@ StringBasic& StringBasic::operator=(StringBasic&& other) noexcept {
     if (m_string != nullptr) {
         try {
             delete[] m_string;
+            m_string = nullptr;
         }
         catch (...) {
         }
     }
 
+    *this = other;
     other.m_string = nullptr;
-    *this = std::move(other);
     return *this;
 }
 
@@ -165,6 +169,8 @@ void StringBasic::add_char(const char chr) {
     }
     else if (m_lenght == (m_size - 1)) {
         increase_size(SIZE_SCALE * m_size);
+        m_string[m_lenght] = chr;
+        m_lenght++;
     }
     else {
         m_string[m_lenght] = chr;
@@ -180,7 +186,7 @@ void StringBasic::add_string(const char* const str) {
 }
 
 
-void StringBasic::insert(StringBasic& str, std::size_t offset) {
+void StringBasic::insert(const StringBasic& str, std::size_t offset) {
     if (offset > m_lenght) {
         throw std::out_of_range("invalid offset");
     }
@@ -194,7 +200,7 @@ void StringBasic::insert(StringBasic& str, std::size_t offset) {
 }
 
 
-void StringBasic::replace(StringBasic& substring, StringBasic& newsubstring) {
+void StringBasic::replace(const StringBasic& substring, const StringBasic& newsubstring) {
     for (std::size_t i = 0; i <= (m_lenght - substring.m_lenght); i++) {
         bool is_substring = true;
         for (std::size_t j = 0; j < substring.m_lenght; j++) {
@@ -223,7 +229,7 @@ void StringBasic::replace(StringBasic& substring, StringBasic& newsubstring) {
             else {
                 std::memcpy(m_string + i, newsubstring.m_string, newsubstring.m_lenght);
             }
-            i += newsubstring.m_lenght;
+            i += newsubstring.m_lenght - 1;
         }
     }
 }

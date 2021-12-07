@@ -38,7 +38,7 @@ public:
      * @str string to insert
      * @offset offset to insert there the string
     */
-    void insert(StringBasic& str, std::size_t offset);
+    void insert(const StringBasic& str, std::size_t offset);
     
 
     /*
@@ -46,7 +46,7 @@ public:
      * @param substring existing substring to replace
      * @param newsubstring new substring to change to
     */
-    void replace(StringBasic& substring, StringBasic& newsubstring);
+    void replace(const StringBasic& substring, const StringBasic& newsubstring);
 
 private:
     friend std::ostream& operator<<(std::ostream& strm, const StringBasic& str) noexcept;
